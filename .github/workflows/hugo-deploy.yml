@@ -1,0 +1,70 @@
+# 工作流名称，可自定义
+name: Deploy Hugo Blog to GitHub Pages
+
+# 触发条件：推送到 main 分支（如果你的默认分支是 master，替换成 master）
+on:
+  push:
+    branches:
+      - master
+
+# 配置 GITHUB_TOKEN 权限（解决 Pages API 访问权限问题，必配）
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 环境配置，指定 Pages 部署环境
+env:
+  HUGO_VERSION: 0.121.0  # Hugo 版本，可根据你的模板需求升级（保持最新稳定版即可）
+
+jobs:
+  # 第一步：构建 Hugo 博客，生成静态文件
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 拉取仓库代码
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # Hugo 博客可能包含主题子模块，必须添加该参数拉取子模块
+          submodules: true
+          fetch-depth: 0
+
+      # 2. 安装 Hugo 环境（自动匹配系统，无需手动配置）
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          # 如果你的 Hugo 模板需要扩展版（支持 SCSS 等），打开下面这行注释
+          # extended: true
+
+      # 3. 构建 Hugo 博客，生成静态文件到 public 目录（Hugo 默认输出目录）
+      - name: Build Hugo site
+        run: hugo --minify  # --minify 参数用于压缩静态文件，优化站点加载速度
+
+      # 4. 配置 GitHub Pages（解决你之前的 Not Found 错误，已加 enablement: true）
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      # 5. 上传构建好的静态文件，作为后续部署的产物
+      - name: Upload build artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public  # 指向 Hugo 构建输出的 public 目录
+
+  # 第二步：部署构建好的静态文件到 GitHub Pages
+  deploy:
+    runs-on: ubuntu-latest
+    # 依赖 build 任务完成后再执行
+    needs: build
+    # 部署环境（固定配置，用于 GitHub Pages 部署）
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # 6. 部署到 GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
