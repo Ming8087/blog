@@ -15,10 +15,10 @@
     [social.params]
         icon = "brand-github"
 
-#[[social]]
-#    identifier = "twitter"
-#    name       = "Twitter"
-#    url        = "https://twitter.com"
-#
-#    [social.params]
-#        icon = "brand-twitter"
+[[social]]
+    identifier = "bilibili"
+    name       = "Bilibili"
+    url        = "https://space.bilibili.com/509191678"  # 替换成你的B站UID
+
+    [social.params]
+        icon = "brand-bilibili"
