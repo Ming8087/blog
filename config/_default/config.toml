@@ -1,7 +1,7 @@
 # Change baseurl before deploy
 baseurl      = "https://Ming8087.github.io/blog/"
 languageCode = "zh-cn"
-title        = "Ming8087"
+title        = "小明icode"
 
 # Theme i18n support
 # See all available values at https://github.com/CaiJimmy/hugo-theme-stack/tree/master/i18n

@@ -2,11 +2,11 @@
 [en]
     languageName      = "English"
     languagedirection = "ltr"
-    title             = "Ming8087's Blog"
+    title             = "Xiaoming Icode's Blog"
     weight            = 1
 
 [zh-cn]
 languageName      = "中文"
 languagedirection = "ltr"
-title             = "Ming8087的博客"
+title             = "小明icode的博客"
 weight            = 2
