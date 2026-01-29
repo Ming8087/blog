@@ -19,7 +19,7 @@ SortBy              = "default"
 
 [sidebar]
     emoji    = "🍥"
-    subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+    subtitle = "悟已往之不谏，知来者之可追"
     avatar   = "img/avatar.png"
 
 [article]
